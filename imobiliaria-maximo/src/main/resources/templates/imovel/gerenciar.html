@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="~{base :: head}"></head>
+<body>
+	<div th:replace="~{base :: logo}"></div>
+	<div class="container">
+		<div th:replace="~{base :: titulo('Gerenciar Imóvel')}"></div>
+		<div class="card mt-3" th:each="imovel : ${imoveis}">
+			<th:block th:switch="${imovel.status.name()}">
+				<div id="descricao" th:case="'DISPONIVEL'"
+					class="card-header alert-secondary" th:text="${imovel.descricao}">Descrição:
+				</div>
+				<div id="descricao" th:case="'ALUGADO'"
+					class="card-header alert-primary" th:text="${imovel.descricao}">Descrição:
+				</div>
+				<div id="descricao" th:case="'VENDIDO'"
+					class="card-header alert-success" th:text="${imovel.descricao}">Descrição:
+				</div>
+			</th:block>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 col-sm-8 mb-3">
+						<div>
+							Número de comodos: <span th:text="${imovel.numeroDeComodos}"></span>
+						</div>
+						<div>
+							Endereço: <span th:text="${imovel.endereco}"></span>
+						</div>
+						<div>
+							Tamanho do terreno: <span th:text="${imovel.tamanhoDoTerreno}"></span>
+						</div>
+						<form th:object="${requisicaoAlterarImovel}" action="/imovel/atualizar" method="POST">
+							<div>
+								<input type="hidden" th:value="${imovel.descricao}" th:name="descricao" />
+							</div>
+							<div>
+								Preço compra: <input class="form-control" th:name="precoCompra"
+									th:if="${imovel.precoCompra} != ''"
+									th:value="${'R$ ' + #numbers.formatDecimal(imovel.precoCompra, 3, 'POINT', 2, 'COMMA')}"></input>
+							</div>
+							<div>
+								Preço aluguel: <input class="form-control" th:name="precoAluguel"
+									th:if="${imovel.precoAluguel} != ''"
+									th:value="${'R$ ' + #numbers.formatDecimal(imovel.precoAluguel, 3, 'POINT', 2, 'COMMA')}"></input>
+							</div>
+							<br /> <select class="custom-select" th:name="status">
+								<option value="DISPONIVEL">Disponível</option>
+								<option value="ALUGADO">Alugar</option>
+								<option value="VENDIDO">Vender</option>
+							</select>
+							<br />
+							<br />
+							<button class="btn btn-primary" type="submit">Atualizar</button>
+						</form>
+					</div>
+					<div class="col-12 col-sm-4">
+						<div>
+							<img class="img-thumbnail" th:src="${imovel.urlImagem}" src="" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

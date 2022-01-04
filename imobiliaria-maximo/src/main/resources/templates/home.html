@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="~{base :: head}"></head>
+<body>
+	<div th:replace="~{base :: logo}"></div>
+	<div class="container">
+		<div th:replace="~{base :: titulo('Imóveis')}"></div>
+		<nav
+			class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between mb-3">
+			<div class="navbar-nav">
+				<a th:classappend="${status} == null ? 'active'"
+					class="nav-item nav-link" href="/home">Todos</a> <a
+					th:classappend="${status} == 'disponivel' ? 'active'"
+					class="nav-item nav-link" href="/home/disponivel">Disponíveis</a> <a
+					th:classappend="${status} == 'alugado' ? 'active'"
+					class="nav-item nav-link" href="/home/alugado">Alugados</a> <a
+					th:classappend="${status} == 'vendido' ? 'active'"
+					class="nav-item nav-link" href="/home/vendido">Vendidos</a>
+			</div>
+			<a href="/imovel/formulario"><button
+					class="btn btn-outline-secondary my-2 my-sm-0">Novo</button></a>
+		</nav>
+		<form id="form-gerenciar" th:object="${string}" action="/imovel/gerenciar"
+			method="POST">
+			<input id="desc-imovel" name="imovel" type="hidden"
+				value="default-value" />
+		</form>
+		<div onclick="sendForm()" class="card mb-3"
+			th:each="imovel : ${imoveis}">
+
+			<th:block th:switch="${imovel.status.name()}">
+				<div id="descricao" th:case="'DISPONIVEL'"
+					class="card-header alert-secondary" th:text="${imovel.descricao}">Descrição:
+				</div>
+				<div id="descricao" th:case="'ALUGADO'"
+					class="card-header alert-primary" th:text="${imovel.descricao}">Descrição:
+				</div>
+				<div id="descricao" th:case="'VENDIDO'"
+					class="card-header alert-success" th:text="${imovel.descricao}">Descrição:
+				</div>
+			</th:block>
+
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 col-sm-8 mb-3">
+						<div>
+							Número de comodos: <span th:text="${imovel.numeroDeComodos}"></span>
+						</div>
+						<div>
+							Endereço: <span th:text="${imovel.endereco}"></span>
+						</div>
+						<div>
+							Tamanho do terreno: <span th:text="${imovel.tamanhoDoTerreno}"></span>
+						</div>
+						<div>
+							Preço compra: <span th:if="${imovel.precoCompra} != ''"
+								th:text="${'R$ ' + #numbers.formatDecimal(imovel.precoCompra, 3, 'POINT', 2, 'COMMA')}"></span>
+						</div>
+						<div>
+							Preço aluguel: <span th:if="${imovel.precoAluguel} != ''"
+								th:text="${'R$ ' + #numbers.formatDecimal(imovel.precoAluguel, 3, 'POINT', 2, 'COMMA')}"></span>
+						</div>
+					</div>
+					<div class="col-12 col-sm-4">
+						<div>
+							<img class="img-thumbnail" th:src="${imovel.urlImagem}" src="" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript">
+	function sendForm(){
+		let imovel = document.getElementById('descricao').innerText;
+		
+		document.querySelectorAll('#desc-imovel').forEach(element=>element.setAttribute('value', imovel));
+		document.querySelector('#form-gerenciar').submit();
+	}
+	
+</script>
+</html>

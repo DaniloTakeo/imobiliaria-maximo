@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="~{base :: head}"></head>
+<body>
+	<div th:replace="~{base :: logo}"></div>
+	<div class="container">
+		<div th:replace="~{base :: titulo('Novo Imóvel')}"></div>
+		<div class="card mt-3">
+			<form th:object="${requisicaoNovoImovel}" class="card-body"
+				action="/imovel/novo" method="POST">
+				<div class="form-group">
+					<label for="descricaoImovel">Descrição</label> <input
+						th:errorclass=is-invalid th:field=*{descricaoImovel}
+						class="form-control" placeholder="descrição do imóvel" /> <small>Informe
+						qual a descrição do imóvel.</small>
+					<div class="invalid-feedback" th:errors="*{descricaoImovel}">Erros
+						descrição do imóvel.</div>
+				</div>
+				<div class="form-group">
+					<label for="enderecoImovel">Endereço</label> <input
+						th:errorclass=is-invalid th:field=*{enderecoImovel}
+						class="form-control" placeholder="endereço do imóvel" /> <small>Informe
+						qual endereço do imóvel</small>
+					<div class="invalid-feedback" th:errors="*{enderecoImovel}">Erros
+						endereço do imóvel.</div>
+				</div>
+				<div class="form-group">
+					<label for="numeroComodos">Número de cômodos</label> <input
+						th:field=*{numeroComodos} class="form-control"
+						placeholder="número de cômodos" /> <small>Informe quantos
+						cômodos tem o imóvel</small>
+				</div>
+				<div class="form-group">
+					<label for="precoAluguel">Preço do aluguel</label> <input
+						th:field=*{precoAluguel} class="form-control"
+						placeholder="preço do aluguel" /> <small>Informe o valor
+						do aluguel do imóvel</small>
+				</div>
+				<div class="form-group">
+					<label for="precoVenda">Preço da venda</label> <input
+						th:field=*{precoVenda} class="form-control"
+						placeholder="preço da venda" /> <small>Informe o valor da
+						venda do imóvel</small>
+				</div>
+				<div class="form-group">
+					<label for="tamanhoTerreno">Tamanho do terreno</label> <input
+						th:field=*{tamanhoTerreno} class="form-control"
+						placeholder="tamanho do terreno" /> <small>Informe qual o
+						tamanho do terreno em m²</small>
+				</div>
+				<div class="form-group">
+					<label for="urlImagem">Imagem</label> <input th:field=*{urlImagem}
+						th:errorclass=is-invalid class="form-control"
+						placeholder="url da imagem" /> <small>Cole a url de uma
+						foto do imovel aqui</small>
+					<div class="invalid-feedback" th:errors="*{urlImagem}">Erros
+						imagem do imóvel.</div>
+				</div>
+				<button class="btn btn-primary" type="submit">Cadastrar</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
